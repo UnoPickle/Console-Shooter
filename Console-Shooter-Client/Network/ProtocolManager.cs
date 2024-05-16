@@ -100,7 +100,5 @@ public class ProtocolManager(NetworkHandler networkHandler)
 public enum PacketType : byte
 {
     ErrorPacket = 0,
-    LoginPacket = 1,
-    CreateMatchPacket = 2,
-    JoinMatchPacket = 3,
+    LoginPacket = 1
 }

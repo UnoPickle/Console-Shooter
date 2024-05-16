@@ -1,0 +1,13 @@
+﻿namespace Console_Shooter_Host;
+
+public struct Packet(PacketType type, string json)
+{
+    public PacketType Type = type;
+    public string Json = json;
+}
+
+public enum PacketType : byte
+{
+    ErrorPacket = 0,
+    LoginPacket = 1
+}

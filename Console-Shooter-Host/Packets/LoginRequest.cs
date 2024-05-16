@@ -1,11 +1,6 @@
 ﻿namespace Console_Shooter_Host.Packets;
 
-public class LoginRequest
+public class LoginRequest(string username)
 {
-    public string username;
-
-    public LoginRequest(string username)
-    {
-        this.username = username;
-    }
+    public string username = username;
 }

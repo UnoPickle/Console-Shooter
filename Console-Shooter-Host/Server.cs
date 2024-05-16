@@ -1,25 +1,71 @@
-﻿using System.Text.RegularExpressions;
-using System.Threading.Channels;
-using Console_Shooter_Host.Managers;
-using Console_Shooter_Host.Matches;
-using Match = Console_Shooter_Host.Matches.Match;
+﻿using System.Net.Sockets;
+using System.Text;
 
 namespace Console_Shooter_Host;
 
 public class Server
 {
-    private const int Port = 3535;
-    
-    public NetworkHandler NetworkHandler;
-    public ClientManager ClientManager;
-    public LoginManager LoginManager;
-    public Match Match;
+    private NetworkManager _networkManager;
+    public ClientManager ClientManager = new();
+    public LoginManager LoginManager = new();
 
-    public Server(string matchName, uint numberOfPlayers, string admin)
+    private Thread _clientAccepter;
+    
+    public Server(string ip, int port)
     {
-        ClientManager = new ClientManager(this);
-        NetworkHandler = new NetworkHandler(this,"0.0.0.0", Port);
-        LoginManager = new();
-        Match = new(new MatchSettings(matchName, numberOfPlayers),admin);
+        _networkManager = new NetworkManager(ip, port);
+
+        _clientAccepter = new Thread(AcceptClients);
+        _clientAccepter.Start();
     }
+
+    public void AcceptClients()
+    {
+        try
+        {
+            while (true)
+            {
+                var tcpClient = _networkManager.AcceptClient();
+
+                var newClient = new Client(tcpClient, new LoginRequestHandler());
+                
+                var clientGuid = ClientManager.Add(newClient);
+                
+                Thread receiverThread = new Thread(() => HandleClient(clientGuid));
+                receiverThread.Start();
+            }
+        }
+        catch (ThreadInterruptedException e)
+        {
+        }
+    }
+
+    public void HandleClient(Guid clientId)
+    {
+        while (true)
+        {
+            var client = ClientManager.GetClient(clientId);
+            
+            PacketType type;
+            type = (PacketType)client.Receive(1)[0];
+
+            UInt32 length;
+            length = BitConverter.ToUInt32(client.Receive(sizeof(UInt32)));
+
+            string json;
+            json = Encoding.UTF8.GetString(client.Receive(length));
+
+            Packet packet = new(type, json);
+
+            if (client.RequestHandler.IsPacketRelevant(type))
+            {
+                client.RequestHandler.HandlePacket(this, packet, clientId);
+            }
+            else
+            {
+                // handle non-relevant packets
+            }
+        }
+    }
+
 }

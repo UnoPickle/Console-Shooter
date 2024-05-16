@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console-Shooter-Host", "Console-Shooter-Host\Console-Shooter-Host.csproj", "{3F78AF76-10F8-4387-BC55-97E84A9CF057}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console-Shooter-Client", "Console-Shooter-Client\Console-Shooter-Client.csproj", "{32BBE3E2-592C-4F79-8CA0-EDB0ECB017FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console-Shooter-Host", "Console-Shooter-Host\Console-Shooter-Host.csproj", "{C2684989-5FC7-458C-8C71-7088B3B078F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3F78AF76-10F8-4387-BC55-97E84A9CF057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F78AF76-10F8-4387-BC55-97E84A9CF057}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F78AF76-10F8-4387-BC55-97E84A9CF057}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F78AF76-10F8-4387-BC55-97E84A9CF057}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32BBE3E2-592C-4F79-8CA0-EDB0ECB017FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32BBE3E2-592C-4F79-8CA0-EDB0ECB017FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32BBE3E2-592C-4F79-8CA0-EDB0ECB017FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32BBE3E2-592C-4F79-8CA0-EDB0ECB017FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2684989-5FC7-458C-8C71-7088B3B078F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2684989-5FC7-458C-8C71-7088B3B078F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2684989-5FC7-458C-8C71-7088B3B078F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2684989-5FC7-458C-8C71-7088B3B078F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

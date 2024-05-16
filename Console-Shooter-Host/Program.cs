@@ -1,10 +1,15 @@
 ﻿namespace Console_Shooter_Host;
 
-public static class Program
+static class Program
 {
-    
-    public static void Main(string[] args)
+    public static int Main(string[] args)
     {
-        Server server = new Server(args[0], uint.Parse(args[1]), args[2]);
+        Server server = new Server("0.0.0.0", 3535);
+
+        while (true)
+        {
+        }
+
+        return 0;
     }
 }

@@ -24,13 +24,13 @@ public class Game
         
         _printDevice = new();
         Renderer = new(_printDevice);
-        /*_networkHandler = new(ServerIp);
+        _networkHandler = new(ServerIp);
         ProtocolManager = new(_networkHandler);
-        ProtocolManager.GetPackets();*/
+        ProtocolManager.GetPackets();
         
         
         _frameLoop = new();
-        SceneManager = new(new GameScene(this), ref _frameLoop.UpdateHook, this);
+        SceneManager = new(new MenuScene(this), ref _frameLoop.UpdateHook, this);
         
         
         _frameLoop.Start();
