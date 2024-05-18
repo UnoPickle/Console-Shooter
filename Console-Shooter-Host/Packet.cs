@@ -9,5 +9,7 @@ public struct Packet(PacketType type, string json)
 public enum PacketType : byte
 {
     ErrorPacket = 0,
-    LoginPacket = 1
+    LoginPacket = 1,
+    GetMapPacket = 2,
+    UpdatePositionPacket = 3
 }

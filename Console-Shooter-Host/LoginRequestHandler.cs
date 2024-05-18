@@ -17,8 +17,12 @@ public class LoginRequestHandler : IRequestHandler
                 var request = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginRequest>(packet.Json);
 
                 Login(server, request, clientId);
-                server.ClientManager.GetClient(clientId).Send(PacketUtils.PreparePacket(PacketType.LoginPacket,
+                var client = server.ClientManager.GetClient(clientId);
+                
+                client.Send(PacketUtils.PreparePacket(PacketType.LoginPacket,
                     new LoginResponse(LoginResponse.Successful)));
+                
+                server.ClientManager.UpdateRequestHandler(clientId, new MenuRequestHandler());
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

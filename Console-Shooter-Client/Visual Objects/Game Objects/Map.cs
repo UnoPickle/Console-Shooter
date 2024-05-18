@@ -61,20 +61,6 @@ public class Map : VisualObject
         return false;
     }
 
-    /*public MapEntry? GetObjectAt(Coords coords)
-    {
-        foreach (var entry in _map)
-        {
-            if (entry.Coords.X >= coords.X && entry.Coords.X + entry.VisualObject.GetSizeRect().Right <= coords.X &&
-                entry.Coords.Y >= coords.Y && entry.Coords.Y + entry.VisualObject.GetSizeRect().Bottom <= coords.Y)
-            {
-                return entry;
-            }
-        }
-
-        return null;
-    }*/
-
     public override CharInfo[,] GetVisualData()
     {
         var rows = _map.GetLength(0);
@@ -99,9 +85,9 @@ public class Map : VisualObject
     
 }
 
-public struct MapEntry(Color color, bool isCollidable, int renderLayer)
+public struct MapEntry(Color color, bool isCollidable, byte renderLayer)
 {
     public readonly Color Color = color;
     public readonly bool IsCollidable = isCollidable;
-    public readonly int RenderLayer = renderLayer;
+    public readonly byte RenderLayer = renderLayer;
 }

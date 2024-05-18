@@ -95,10 +95,21 @@ public class ProtocolManager(NetworkHandler networkHandler)
 
         return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(response.Json);
     }
+
+    public GetMapResponse GetMap(GetMapRequest request)
+    {
+        _networkHandler.Write(PreparePacket(PacketType.GetMapPacket, request));
+
+        Packet response = GetPacket(PacketType.GetMapPacket);
+
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<GetMapResponse>(response.Json);
+    }
 }
 
 public enum PacketType : byte
 {
     ErrorPacket = 0,
-    LoginPacket = 1
+    LoginPacket = 1,
+    GetMapPacket = 2,
+    UpdatePositionPacket = 3
 }
