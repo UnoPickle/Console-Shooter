@@ -1,45 +1,34 @@
-﻿using System.Runtime.Serialization.Json;
-using Console_Shooter_Client.Drivers;
-using Console_Shooter_Client.Network;
-using Console_Shooter_Client.Scenes;
-using Console_Shooter_Client.Utils;
-using Console_Shooter_Client.Visual_Objects;
+﻿using Console_Shooter_Client.Scenes;
 
 namespace Console_Shooter_Client;
 
 public class Game
 {
-    private const string ServerIp = "127.0.0.1";
-    
-    private FrameLoop _frameLoop;
-    private PrintDevice _printDevice;
-    private NetworkHandler _networkHandler;
-    
-    public Renderer.Renderer Renderer;
-    public SceneManager SceneManager;
-    public ProtocolManager ProtocolManager;
+    private Thread _loopThread;
+    private EventHandler<float>? _updateHook;
+
+    private GameManager _gameManager;
     
     public Game()
     {
-        
-        _printDevice = new();
-        Renderer = new(_printDevice);
-        _networkHandler = new(ServerIp);
-        ProtocolManager = new(_networkHandler);
-        ProtocolManager.GetPackets();
-        
-        
-        _frameLoop = new();
-        SceneManager = new(new MenuScene(this), ref _frameLoop.UpdateHook, this);
-        
-        
-        _frameLoop.Start();
-        
-        _frameLoop.UpdateHook += Update;
+        _loopThread = new Thread(Loop);
+        _loopThread.Start();
+
+        _gameManager = new GameManager(new GameScene(), ref _updateHook);
     }
-    
-    private void Update(object? o, float elapsedTime)
+
+    private void Loop()
     {
-        Renderer.RenderFrame();
+        DateTime prevFrameTime = DateTime.Now;
+
+        while (true)
+        {
+            var current = DateTime.Now;
+
+            TimeSpan elapsedTime = current - prevFrameTime;
+            prevFrameTime = DateTime.Now;
+            
+            _updateHook?.Invoke(null, (float)elapsedTime.TotalSeconds);
+        }
     }
 }

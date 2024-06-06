@@ -1,6 +1,4 @@
-﻿using Console_Shooter_Client.Drivers;
-
-namespace Console_Shooter_Client.Utils;
+﻿namespace Console_Shooter_Client.Rendering;
 
 public static class ColorUtils
 {

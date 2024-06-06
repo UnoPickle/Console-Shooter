@@ -1,5 +1,6 @@
-﻿using Console_Shooter_Client.Network.Packets;
-using Console_Shooter_Host.Packets;
+﻿using Console_Shooter_Host.Packets;
+using Console_Shooter_Protocol;
+using Console_Shooter_Protocol.Packets;
 
 namespace Console_Shooter_Host;
 

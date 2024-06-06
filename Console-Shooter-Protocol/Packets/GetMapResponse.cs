@@ -1,4 +1,4 @@
-﻿namespace Console_Shooter_Client.Network.Packets;
+﻿namespace Console_Shooter_Protocol.Packets;
 
 public class GetMapResponse(byte[] serializedMap, UInt32 rows, UInt32 columns, UInt32 status)
 {

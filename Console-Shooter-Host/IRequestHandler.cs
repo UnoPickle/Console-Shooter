@@ -1,4 +1,6 @@
-﻿namespace Console_Shooter_Host;
+﻿using Console_Shooter_Protocol;
+
+namespace Console_Shooter_Host;
 
 public interface IRequestHandler
 {

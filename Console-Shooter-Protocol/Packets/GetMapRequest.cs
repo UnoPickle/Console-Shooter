@@ -1,4 +1,4 @@
-﻿namespace Console_Shooter_Client.Network.Packets;
+﻿namespace Console_Shooter_Protocol.Packets;
 
 public class GetMapRequest(uint mapId)
 {

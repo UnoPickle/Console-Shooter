@@ -1,4 +1,4 @@
-﻿namespace Console_Shooter_Host;
+﻿namespace Console_Shooter_Protocol;
 
 public struct Packet(PacketType type, string json)
 {

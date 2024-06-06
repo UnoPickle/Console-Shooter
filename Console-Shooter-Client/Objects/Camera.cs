@@ -1,57 +1,75 @@
-﻿using Console_Shooter_Client.Drivers;
-using Console_Shooter_Client.Renderer;
+﻿using Console_Shooter_Client.Rendering;
 
-namespace Console_Shooter_Client.Visual_Objects;
+namespace Console_Shooter_Client.Objects;
 
-public class Camera : VisualObject
+public class Camera : GameObject
 {
-    public Coords Coords = new Coords(0 ,0);
+    public Coords ViewLocation = new Coords(0 ,0);
 
-    private List<Renderer.Renderer.FrameObject>[] _currentFrameObjects =
-        Array.Empty<List<Renderer.Renderer.FrameObject>>();
+    private List<GameObject>[] _currentFrameObjects =
+        Array.Empty<List<GameObject>>();
 
-    public void RenderObject(VisualObject visualObject, Coords coords, int layer)
+    public T CreateObject<T>(Coords coords, int layer, params object?[]? args) where T : GameObject
     {
+        var gameObject = GameObject.CreateObject<T>(coords, layer, Scene, args);
+        
         var currentFrameObjectsLength = _currentFrameObjects.Length;
-        if (currentFrameObjectsLength < (layer + 1))
+        if (currentFrameObjectsLength < (gameObject.Layer + 1))
         {
-            Array.Resize(ref _currentFrameObjects, (layer + 1));
+            Array.Resize(ref _currentFrameObjects, (gameObject.Layer + 1));
 
             for (int i = currentFrameObjectsLength; i < _currentFrameObjects.Length; i++)
             {
-                _currentFrameObjects[i] = new List<Renderer.Renderer.FrameObject>();
+                _currentFrameObjects[i] = new List<GameObject>();
             }
         }
 
-        _currentFrameObjects[layer].Add(new Renderer.Renderer.FrameObject(visualObject, coords));
+        _currentFrameObjects[gameObject.Layer].Add(gameObject);
+
+        return gameObject;
     }
 
-    public override CharInfo[,] GetVisualData()
+    public override void Start()
+    {
+        
+    }
+
+    public override void Update(float deltaTime)
+    {
+        
+    }
+
+    public override void Deleted()
+    {
+        
+    }
+
+    public override WindowsDriver.CharInfo[,] GetVisualData()
     {
         return GetNextFrame();
     }
 
-    private CharInfo[,] GetNextFrame()
+    private WindowsDriver.CharInfo[,] GetNextFrame()
     {
-        CharInfo[,] data = new CharInfo[Screen.DefaultHeight, Screen.DefaultWidth];
+        WindowsDriver.CharInfo[,] data = new WindowsDriver.CharInfo[Renderer.ScreenHeight, Renderer.ScreenWidth];
 
         for (int i = 0; i < _currentFrameObjects.Length; i++)
         {
-            foreach (var frameObject in _currentFrameObjects[i])
+            foreach (var gameObject in _currentFrameObjects[i])
             {
-                var slice = GetObjectSlice(frameObject);
+                var slice = GetObjectSlice(gameObject);
 
                 if (slice == null)
                 {
                     break;
                 }
                 
-                var objectRect = frameObject.VisualObject.GetSizeRect();
+                var objectRect = gameObject.GetSizeRect();
 
                 var width = objectRect.Right - slice?.Left - slice?.Right;
                 var height = objectRect.Bottom - slice?.Top - slice?.Bottom;
 
-                var visualData = frameObject.VisualObject.GetVisualData();
+                var visualData = gameObject.GetVisualData();
 
                 for (short col = 0; col < width; col++)
                 {
@@ -62,7 +80,7 @@ public class Camera : VisualObject
 
                         var verticalStartingIndex = (short)slice?.Top!;
                         
-                        var index = ConvertCoordsToIndex(new Coords((short)(col + frameObject.Coords.X + horizontalStartingIndex), (short)(row + frameObject.Coords.Y + verticalStartingIndex)));
+                        var index = ConvertCoordsToIndex(new Coords((short)(col + gameObject.Coords.X + horizontalStartingIndex), (short)(row + gameObject.Coords.Y + verticalStartingIndex)));
                         data[index.Y, index.X] =
                             visualData[verticalStartingIndex + row, horizontalStartingIndex + col];
                     }
@@ -70,24 +88,19 @@ public class Camera : VisualObject
             }
         }
 
-        foreach (var frameObjects in _currentFrameObjects)
-        {
-            frameObjects.Clear();
-        }
-
         return data;
     }
 
     private Coords ConvertCoordsToIndex(Coords coords)
     {
-        return new Coords((short)(coords.X - this.Coords.X), (short)(coords.Y - this.Coords.Y));
+        return new Coords((short)(coords.X - this.ViewLocation.X), (short)(coords.Y - this.ViewLocation.Y));
     }
     
-    public SmallRect? GetObjectSlice(Renderer.Renderer.FrameObject frameObject)
+    public WindowsDriver.SmallRect? GetObjectSlice(GameObject frameObject)
     {
-        var objectRect = frameObject.VisualObject.GetSizeRect();
+        var objectRect = frameObject.GetSizeRect();
 
-        var leftDiff = frameObject.Coords.X - Coords.X;
+        var leftDiff = frameObject.Coords.X - ViewLocation.X;
 
         if (leftDiff < 0)
         {
@@ -103,7 +116,7 @@ public class Camera : VisualObject
             leftDiff = 0;
         }
 
-        var rightDiff = Coords.X + Screen.DefaultWidth - (frameObject.Coords.X + objectRect.Right);
+        var rightDiff = ViewLocation.X + Renderer.ScreenWidth - (frameObject.Coords.X + objectRect.Right);
 
         if (rightDiff < 0)
         {
@@ -119,7 +132,7 @@ public class Camera : VisualObject
             rightDiff = 0;
         }
 
-        var topDiff = frameObject.Coords.Y - Coords.Y;
+        var topDiff = frameObject.Coords.Y - ViewLocation.Y;
 
         if (topDiff < 0)
         {
@@ -135,7 +148,7 @@ public class Camera : VisualObject
             topDiff = 0;
         }
 
-        var bottomDiff = Coords.Y + Screen.DefaultHeight - (frameObject.Coords.Y + objectRect.Bottom);
+        var bottomDiff = ViewLocation.Y + Renderer.ScreenHeight - (frameObject.Coords.Y + objectRect.Bottom);
 
         if (bottomDiff < 0)
         {
@@ -152,7 +165,7 @@ public class Camera : VisualObject
         }
 
 
-        return new SmallRect((short)leftDiff, (short)topDiff,
+        return new WindowsDriver.SmallRect((short)leftDiff, (short)topDiff,
             (short)rightDiff,
             (short)bottomDiff);
     }

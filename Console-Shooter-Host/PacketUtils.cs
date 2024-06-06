@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Console_Shooter_Protocol;
 
 namespace Console_Shooter_Host.Packets;
 

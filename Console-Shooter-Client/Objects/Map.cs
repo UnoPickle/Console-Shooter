@@ -1,10 +1,8 @@
-﻿using Console_Shooter_Client.Drivers;
-using Console_Shooter_Client.Renderer;
-using Console_Shooter_Client.Utils;
+﻿using Console_Shooter_Client.Rendering;
 
-namespace Console_Shooter_Client.Visual_Objects.Game_Objects;
+namespace Console_Shooter_Client.Objects;
 
-public class Map : VisualObject
+public class Map : GameObject
 {
     private MapEntry[,] _map;
 
@@ -36,7 +34,7 @@ public class Map : VisualObject
         return new Map(mapEntries);
     }
 
-    public bool CheckCollision(SmallRect colliderLocRect)
+    /*public bool CheckCollision(WindowsDriver.SmallRect colliderLocRect)
     {
         var mapLocRect = GetLocRect();
         
@@ -59,24 +57,39 @@ public class Map : VisualObject
         }
 
         return false;
+    }*/
+
+    public override void Start()
+    {
+        
     }
 
-    public override CharInfo[,] GetVisualData()
+    public override void Update(float deltaTime)
+    {
+        
+    }
+
+    public override void Deleted()
+    {
+        
+    }
+
+    public override WindowsDriver.CharInfo[,] GetVisualData()
     {
         var rows = _map.GetLength(0);
         var columns = _map.GetLength(1);
         
         var dataWidth = columns * 2;
         var dataHeight = rows;
-        CharInfo[,] data = new CharInfo[dataHeight, dataWidth];
+        WindowsDriver.CharInfo[,] data = new WindowsDriver.CharInfo[dataHeight, dataWidth];
 
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < columns; col++)
             {
                 var mapEntry = _map[row, col];
-                data[row, (col * 2)] = new CharInfo(' ', ColorUtils.GetColorCode(mapEntry.Color, mapEntry.Color));
-                data[row, (col * 2) + 1] = new CharInfo(' ', ColorUtils.GetColorCode(mapEntry.Color, mapEntry.Color));
+                data[row, (col * 2)] = new WindowsDriver.CharInfo(' ', ColorUtils.GetColorCode(mapEntry.Color, mapEntry.Color));
+                data[row, (col * 2) + 1] = new WindowsDriver.CharInfo(' ', ColorUtils.GetColorCode(mapEntry.Color, mapEntry.Color));
             }
         }
 

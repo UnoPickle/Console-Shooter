@@ -1,4 +1,4 @@
-﻿namespace Console_Shooter_Host.Packets;
+﻿namespace Console_Shooter_Protocol.Packets;
 
 public class LoginRequest(string username)
 {
