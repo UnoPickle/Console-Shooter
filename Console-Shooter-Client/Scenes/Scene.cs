@@ -18,7 +18,13 @@ public abstract class Scene
         }
     }
 
-    public abstract void Delete();
+    public virtual void Delete()
+    {
+        foreach (var @object in _sceneObjects)
+        {
+            @object.Deleted();
+        }
+    }
 
     public List<GameObject> GetSceneObjects()
     {

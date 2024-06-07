@@ -1,4 +1,5 @@
-﻿using Console_Shooter_Client.Rendering;
+﻿using Console_Shooter_CLient.Drivers;
+using Console_Shooter_Client.Rendering;
 
 namespace Console_Shooter_Client.Objects;
 
@@ -34,9 +35,9 @@ public class Map : GameObject
         return new Map(mapEntries);
     }
 
-    /*public bool CheckCollision(WindowsDriver.SmallRect colliderLocRect)
+    public bool CheckCollision(WindowsDriver.SmallRect colliderLocRect)
     {
-        var mapLocRect = GetLocRect();
+        var mapLocRect = GetLocationRect();
         
         if (colliderLocRect.Left >= mapLocRect.Right || colliderLocRect.Right <= mapLocRect.Left ||
             colliderLocRect.Top >= mapLocRect.Bottom || colliderLocRect.Bottom <= mapLocRect.Top)
@@ -57,7 +58,7 @@ public class Map : GameObject
         }
 
         return false;
-    }*/
+    }
 
     public override void Start()
     {

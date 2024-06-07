@@ -1,4 +1,5 @@
-﻿using Console_Shooter_Client.Rendering;
+﻿using Console_Shooter_CLient.Drivers;
+using Console_Shooter_Client.Rendering;
 
 namespace Console_Shooter_Client.Objects;
 
@@ -36,12 +37,24 @@ public class Camera : GameObject
 
     public override void Update(float deltaTime)
     {
-        
+        foreach (var objects in _currentFrameObjects)
+        {
+            foreach (var @object in objects)
+            {
+                @object.Update(deltaTime);
+            }
+        }
     }
 
     public override void Deleted()
     {
-        
+        foreach (var objects in _currentFrameObjects)
+        {
+            foreach (var @object in objects)
+            {
+                @object.Deleted();
+            }
+        }
     }
 
     public override WindowsDriver.CharInfo[,] GetVisualData()
@@ -61,7 +74,7 @@ public class Camera : GameObject
 
                 if (slice == null)
                 {
-                    break;
+                    continue;
                 }
                 
                 var objectRect = gameObject.GetSizeRect();

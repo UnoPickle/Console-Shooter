@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
+using Console_Shooter_Client.Rendering;
 
-namespace Console_Shooter_Client.Rendering;
+namespace Console_Shooter_CLient.Drivers;
 
 public class WindowsDriver
 {
@@ -33,24 +34,32 @@ public class WindowsDriver
         }
 
         SmallRect sizeRect = new SmallRect(coords.X, coords.Y, (short)(coords.X + columns), (short)(coords.Y + rows));
-        
+
         WriteConsoleOutput(OutputHandle, charInfoArray, new Coords((short)columns, (short)rows), coords, ref sizeRect);
     }
-    
+
+    public static bool IsKeyPressed(int key)
+    {
+        return (GetKeyState(key) & 0x8000) != 0;
+    }
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern IntPtr GetStdHandle(int nStdHandle);
-    
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool WriteConsoleOutput(IntPtr hConsoleOutput, CharInfo[] lpBuffer, Coords dwBufferSize,
         Coords dwBufferCoord, ref SmallRect lpWriteRegion);
-    
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern short GetKeyState(int nVirtKey);
+
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
     public struct CharInfo(char c, ushort attributes)
     {
         [FieldOffset(0)] public char Char = c;
         [FieldOffset(2)] public ushort Attributes = attributes;
     }
-    
+
     [StructLayout(LayoutKind.Sequential)]
     public struct SmallRect(short left, short top, short right, short bottom)
     {
@@ -59,5 +68,4 @@ public class WindowsDriver
         public short Right = right;
         public short Bottom = bottom;
     }
-
 }
